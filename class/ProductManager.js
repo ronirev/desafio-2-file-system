@@ -1,31 +1,53 @@
-import fs from "fs"
-const data = fs.readFileSync('data/products.json')
-let products = JSON.parse(data)
+import { promises as fs } from 'fs';
+
+import setPathData from "../helpers/setPathData.js";
+//const setPathData =  require('../helpers/setPathData')
+//const data = fs.readFileSync('data/products.json')
+let products= [];
 
 export default class ProductManager {
-    constructor(){
+    constructor(path){
         this.products = products;
+        this.path = path;
     }
 
     //addProduct
-     addProduct(newProduct) {
-       newProduct.id=this.#idGenerate(products);
-        products.push(newProduct);
-       
-        const json_products=JSON.stringify(products);
-         fs.writeFileSync('data/products.json',json_products,'utf-8');
-       
-         return newProduct;
-     
+      async addProduct(newProduct) { 
+        try {
+            const directory = await setPathData(this.path);
+           // this.path = directory
+        if (directory !== '') {
+            const data = await fs.readFile(directory);
+            const products = JSON.parse(data);
+            newProduct.id = this.#idGenerate(products);
+            products.push(newProduct);
+
+            const json_products = JSON.stringify(products);
+            await fs.writeFile(directory, json_products, 'utf-8');
+        }
+            return newProduct;
+        } catch (error) {
+            console.log(error)
+            
+        }
+
 }
     //getProdcuts
-    getProducts(){
-        return this.products;
+    async getProducts(){
+        try {
+        const data = await fs.readFile(this.path, 'utf-8');
+        const products = JSON.parse(data);
+        return products;
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     //getProductById
-    getProductByid(id){
-        const product = this.products.filter(product => product.id == id);
+    async getProductByid(id){
+        const data = await fs.readFile(this.path, 'utf-8');
+        const products = JSON.parse(data);
+        const product = products.filter(product => product.id == id);
         if(product != ''){
             return product[0];
         }else{
@@ -34,12 +56,14 @@ export default class ProductManager {
     }
 
     //delete by id 
-    deleteById = (id)=>{
-        const findId = this.getProductByid(id)
+   deleteById = async (id)=>{
+        const findId = await this.getProductByid(id)
         if(findId != ''){
-            products= this.products.filter(product => product.id !== id)
-            const json_products=JSON.stringify(products)
-            fs.writeFileSync('data/products.json',json_products,'utf-8')
+            const data = await fs.readFile(this.path, 'utf-8');
+            let  products = JSON.parse(data);
+            products= products.filter(product => product.id !== findId.id)
+          const json_products=JSON.stringify(products)
+          await fs.writeFile(this.path,json_products,'utf-8')
              
             return {message:"Product deleted"}
             
@@ -50,9 +74,8 @@ export default class ProductManager {
 
     //delete all 
     deleteAll = ()=>{
-        this.products = [];
         const json_products=JSON.stringify(this.products);
-        fs.writeFileSync('data/products.json',json_products,'utf-8');
+        fs.writeFile(this.path,json_products,'utf-8');
       }
     
     //update by id
@@ -60,10 +83,12 @@ export default class ProductManager {
         const findProduct = this.getProductByid(productUpdate.id)
 
         if(findProduct != ''){
-              this.deleteById(productUpdate.id)
-              products.push(findProduct);
+             await  this.deleteById(productUpdate.id)
+             const data = await fs.readFile(this.path, 'utf-8');
+             let  products = JSON.parse(data);
+              products.push(productUpdate);
               const json_products=JSON.stringify(products);
-             fs.writeFileSync('data/products.json',json_products,'utf-8');
+             fs.writeFile(this.path,json_products,'utf-8');
             
              return findProduct;
            }else{
@@ -75,4 +100,8 @@ export default class ProductManager {
     #idGenerate = (array)=>{
         return array.length + 1;
     }
+
+    
+
 }
+ 

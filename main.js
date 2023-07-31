@@ -1,32 +1,36 @@
 import Product from "./class/Product.js";
 import ProductManager from "./class/ProductManager.js";
 
-const manager = new ProductManager();
+const path = 'data/file.json'
+
+const manager = new ProductManager(path);
 const product = new Product('Producto1','Test',10,'Test','CODPROD01',12);
 
 
 //Test addProduct:
-manager.addProduct(product);
+ // manager.addProduct(product);
 
 //Test getProducts:
-  //console.log(manager.getProducts());
+ // console.log(await manager.getProducts());
 
 //Test getProductById:
-  //console.log(manager.getProductByid())
+ // console.log(await manager.getProductByid(2))
 
 //Test deleteById:
-    //console.log(manager.deleteById(1))
+   // console.log(await manager.deleteById(1))
 
 //Test deleteAll:     
     //manager.deleteAll()
 
     
 // Test Update : 
-//const productToUpdated = manager.getProductByid(1)
+const productToUpdated = await manager.getProductByid(1)
+console.log(productToUpdated) 
 //productToUpdated.description = 'Description updated'
+//console.log(productToUpdated) 
 //manager.updateProduct(productToUpdated)
-//console.log(productToUpdated)
+//console.log(await manager.getProductByid(1))
 
 
-
+//manager.testEscritura('data')
 
