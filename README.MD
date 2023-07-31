@@ -6,6 +6,38 @@ Ejecutar el siguiente comando :
 ```sh
 node main.js
 ```
+Para realizar las pruebas se puede descomentar en main las diferentes funciones implementadas. 
+
+```js 
+//Test addProduct:
+ // console.log(await manager.addProduct(product));
+
+//Test getProducts:
+ // console.log(await manager.getProducts());
+
+//Test getProductById:
+  //console.log(await manager.getProductByid(2))
+
+//Test deleteById:
+   // console.log(await manager.deleteById(1))
+   // console.log(await manager.getProducts())
+
+//Test deleteAll:     
+ //   manager.deleteAll()
+ //  console.log(await manager.getProducts())
+
+    
+// Test Update : 
+//const productToUpdated = await manager.getProductByid(1)
+//productToUpdated.description = 'Description updated'
+//await manager.updateProduct(productToUpdated)
+//console.log(await manager.getProductByid(2))
+
+```
+
+
+
+
 
 ### Diseño del desafio :
 
@@ -48,3 +80,13 @@ export default class Product {
     }
 }
 ```
+<br>
+
+###  Estrategia de persistencia 
+
+Al momento de instanciar la clase **ProductManager** se debe pasar el parametro path, el cual debe ser la ruta y el nombre del file donde se desea persistir la creacion de los productos.
+
+Para la configuracion del path se creo una funcion llamada **setPathData** la cual recibe un path , antes de crear el directorio y el file , implementa la funcion **splitPathAndFileName**, para poder dividir del parametro lo correspondiente a ruta y a nombre de file. 
+**setPathData**  valida si el path ya existe , en ese caso no crea el directorio, de esta forma no se reescribe el file. 
+
+
