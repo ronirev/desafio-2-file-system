@@ -78,8 +78,8 @@ export default class ProductManager {
         fs.writeFile(this.path,json_products,'utf-8');
       }
     
-    //update by id
-    updateProduct = async (productUpdate) =>{
+    //update old 
+    updateProductOld = async (productUpdate) =>{
         const findProduct = this.getProductByid(productUpdate.id)
 
         if(findProduct != ''){
@@ -101,7 +101,25 @@ export default class ProductManager {
         return array.length + 1;
     }
 
-    
+     //update refactor  
+    updateProduct = async (productUpdate) =>{
+        const data = await fs.readFile(this.path, 'utf-8');
+        const products = JSON.parse(data);
+       const updatedProducts = products.map((product) => {
+        if (product.id === productUpdate.id) {
+          return productUpdate;
+        } else {
+          return product;
+        }
+      });
+       const json_products=JSON.stringify(updatedProducts)
+       await fs.writeFile(this.path,json_products,'utf-8')
+       
+       return productUpdate;
+        
+    }
+
+
 
 }
  

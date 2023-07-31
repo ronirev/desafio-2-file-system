@@ -8,7 +8,7 @@ const product = new Product('Producto1','Test',10,'Test','CODPROD01',12);
 
 
 //Test addProduct:
-  //console.log(await manager.addProduct(product));
+ // console.log(await manager.addProduct(product));
 
 //Test getProducts:
  // console.log(await manager.getProducts());
@@ -29,7 +29,7 @@ const product = new Product('Producto1','Test',10,'Test','CODPROD01',12);
 //const productToUpdated = await manager.getProductByid(1)
 //productToUpdated.description = 'Description updated'
 //await manager.updateProduct(productToUpdated)
-//console.log(await manager.getProductByid(1))
+//console.log(await manager.getProductByid(2))
 
 
 
