@@ -1,8 +1,5 @@
 import { promises as fs } from 'fs';
-
 import setPathData from "../helpers/setPathData.js";
-//const setPathData =  require('../helpers/setPathData')
-//const data = fs.readFileSync('data/products.json')
 let products= [];
 
 export default class ProductManager {
@@ -78,7 +75,9 @@ export default class ProductManager {
         fs.writeFile(this.path,json_products,'utf-8');
       }
     
-    //update old 
+    /* updateProductOld
+     Este metodo se depreco , ya que su implementacion eliminaba todo el objeto persistido y despues resscribia con el update.
+    */
     updateProductOld = async (productUpdate) =>{
         const findProduct = this.getProductByid(productUpdate.id)
 
@@ -118,8 +117,6 @@ export default class ProductManager {
        return productUpdate;
         
     }
-
-
 
 }
  
